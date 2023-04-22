@@ -1,3 +1,5 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
 
-# RUN apt update && apt install curl && curl https://tsqlt.org/download/tsqlt/
+USER root
+RUN apt update && apt install -y curl
+RUN curl https://tsqlt.org/download/tsqlt/ > tsqlt.zip
