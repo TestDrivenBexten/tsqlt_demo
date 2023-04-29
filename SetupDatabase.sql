@@ -64,4 +64,20 @@ CREATE VIEW vwItemNameQuality AS (
     FROM
         Item
         JOIN ItemType ON Item.ItemType_ID = ItemType.ItemType_ID
-)
+);
+GO
+
+CREATE VIEW vwRecipeRequirementName AS (
+    SELECT
+        RecipeRequirement.RecipeRequirement_ID,
+        CASE
+            WHEN RecipeRequirement.ItemType_ID IS NOT NULL THEN ItemType.ItemType_Name
+            WHEN RecipeRequirement.Category_ID IS NOT NULL THEN CONCAT('(',RTRIM(Category.Category_Name),')')
+            ELSE '?'
+        END AS RequirementName
+    FROM
+        RecipeRequirement
+        LEFT JOIN ItemType ON ItemType.ItemType_ID = RecipeRequirement.ItemType_ID
+        LEFT JOIN Category ON Category.Category_ID = RecipeRequirement.Category_ID
+);
+GO
