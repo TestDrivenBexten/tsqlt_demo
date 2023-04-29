@@ -31,6 +31,7 @@ fi
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/function/fnCanCraftRecipe.sql
 
 # Create Stored Procedures
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteItemById.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spCraftRecipe.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteLowQualityItem.sql
 
