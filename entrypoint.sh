@@ -12,5 +12,6 @@ while [[ $DBSTATUS -ne 0 ]] && [[ $i -lt 60 ]] && [[ $ERRCODE -ne 0 ]]; do
 	sleep 1
 done
 
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password123!" -i SetupDatabase.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password123!" -i PrepareServer.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password123!" -i tSQLt.class.sql
