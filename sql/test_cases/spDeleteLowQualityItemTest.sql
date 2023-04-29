@@ -6,7 +6,7 @@ AS BEGIN
     -- Arrange
     DECLARE @rowCount INT;
     EXEC tSQLt.FakeTable 'Item';
-    INSERT INTO Item (Item_ID, Material_ID, Item_Quality)
+    INSERT INTO Item (Item_ID, ItemType_ID, Item_Quality)
     VALUES (10, 20, 50);
 
     -- Act
@@ -26,7 +26,7 @@ AS BEGIN
     -- Arrange
     DECLARE @rowCount INT;
     EXEC tSQLt.FakeTable 'Item';
-    INSERT INTO Item (Item_ID, Material_ID, Item_Quality)
+    INSERT INTO Item (Item_ID, ItemType_ID, Item_Quality)
     VALUES (10, 20, 30);
 
     -- Act
@@ -41,12 +41,12 @@ AS BEGIN
 END;
 GO
 
-CREATE PROCEDURE spDeleteLowQualityItemTest.[test should not delete item of different material]
+CREATE PROCEDURE spDeleteLowQualityItemTest.[test should not delete item of different type]
 AS BEGIN
     -- Arrange
     DECLARE @rowCount INT;
     EXEC tSQLt.FakeTable 'Item';
-    INSERT INTO Item (Item_ID, Material_ID, Item_Quality)
+    INSERT INTO Item (Item_ID, ItemType_ID, Item_Quality)
     VALUES (10, 123, 30);
 
     -- Act

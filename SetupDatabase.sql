@@ -4,42 +4,54 @@ GO
 USE [Inventory];
 GO
 
-CREATE TABLE [Material](
-	[Material_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Material_Name] [nchar](25) NULL
+CREATE TABLE [ItemType](
+	[ItemType_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ItemType_Name] [nchar](25) NOT NULL
 );
 GO
 
 CREATE TABLE [Category](
 	[Category_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Category_Name] [nchar](25) NULL
+	[Category_Name] [nchar](25) NOT NULL
 );
 GO
 
 CREATE TABLE [Item](
 	[Item_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Material_ID] INT NOT NULL,
+	[ItemType_ID] INT NOT NULL,
     [Item_Quality] INT NOT NULL,
-    CONSTRAINT FK_Item_Material_ID FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
+    CONSTRAINT FK_Item_ItemType_ID FOREIGN KEY (ItemType_ID) REFERENCES ItemType (ItemType_ID)
 );
 GO
 
-CREATE TABLE [MaterialCategory](
+CREATE TABLE [Recipe](
+	[Recipe_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [Recipe_Name] [nchar](25) NOT NULL,
+	[ItemType_ID_1] INT NOT NULL,
+	[ItemType_ID_2] INT NOT NULL,
+	[ItemType_ID_3] INT NULL,
+    CONSTRAINT FK_Recipe_ItemType_ID_1 FOREIGN KEY (ItemType_ID_1) REFERENCES ItemType (ItemType_ID),
+    CONSTRAINT FK_Recipe_ItemType_ID_2 FOREIGN KEY (ItemType_ID_2) REFERENCES ItemType (ItemType_ID),
+    CONSTRAINT FK_Recipe_ItemType_ID_3 FOREIGN KEY (ItemType_ID_3) REFERENCES ItemType (ItemType_ID)
+);
+GO
+
+CREATE TABLE [ItemTypeCategory](
 	[Category_ID] INT NOT NULL,
-	[Material_ID] INT NOT NULL,
-    CONSTRAINT FK_MaterialCategory_Category_ID FOREIGN KEY (Category_ID) REFERENCES Category (Category_ID),
-    CONSTRAINT FK_MaterialCategory_Material_ID FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
+	[ItemType_ID] INT NOT NULL,
+    CONSTRAINT FK_ItemTypeCategory_Category_ID FOREIGN KEY (Category_ID) REFERENCES Category (Category_ID),
+    CONSTRAINT FK_ItemTypeCategory_ItemType_ID FOREIGN KEY (ItemType_ID) REFERENCES ItemType (ItemType_ID)
 );
 GO
 
 /*
     Views
 */
-CREATE VIEW vwItemMaterialNameQuality AS (
+CREATE VIEW vwItemItemTypeNameQuality AS (
     SELECT
-        Material.Material_Name,
+        ItemType.ItemType_Name,
         Item.Item_Quality
     FROM
         Item
-        JOIN Material ON Item.Material_ID = Material.Material_ID
+        JOIN ItemType ON Item.ItemType_ID = ItemType.ItemType_ID
 )

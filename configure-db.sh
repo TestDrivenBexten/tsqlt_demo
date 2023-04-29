@@ -19,10 +19,10 @@ fi
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i SetupDatabase.sql
 
 /opt/mssql-tools/bin/bcp Category in sample_data/category.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
-/opt/mssql-tools/bin/bcp Material in sample_data/material.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
+/opt/mssql-tools/bin/bcp ItemType in sample_data/item-type.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
 
 /opt/mssql-tools/bin/bcp Item in sample_data/item.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
-/opt/mssql-tools/bin/bcp MaterialCategory in sample_data/material-category.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
+/opt/mssql-tools/bin/bcp ItemTypeCategory in sample_data/item-type-category.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
 
 # Create Stored Procedures
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteLowQualityItem.sql
