@@ -20,15 +20,15 @@ CREATE TABLE [Item](
 	[Item_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Material_ID] INT NOT NULL,
     [Item_Quality] INT NOT NULL,
-    CONSTRAINT FK_Material FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
+    CONSTRAINT FK_Item_Material_ID FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
 );
 GO
 
 CREATE TABLE [MaterialCategory](
 	[Category_ID] INT NOT NULL,
 	[Material_ID] INT NOT NULL,
-    CONSTRAINT FK_Category FOREIGN KEY (Category_ID) REFERENCES Category (Category_ID),
-    CONSTRAINT FK_Material FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
+    CONSTRAINT FK_MaterialCategory_Category_ID FOREIGN KEY (Category_ID) REFERENCES Category (Category_ID),
+    CONSTRAINT FK_MaterialCategory_Material_ID FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
 );
 GO
 
