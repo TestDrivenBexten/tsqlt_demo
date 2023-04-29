@@ -1,0 +1,2 @@
+Recipe_ID,Recipe_Name,RecipeRequirement_ID_1,RecipeRequirement_ID_2,RecipeRequirement_ID_3
+1,Steel Ingot,1,2,

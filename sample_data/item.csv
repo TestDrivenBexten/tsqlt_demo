@@ -1,4 +1,6 @@
-Item_ID,Material_ID,Item_Quality
+Item_ID,ItemType_ID,Item_Quality
 1,1,30
 2,1,40
-1,1,70
+3,1,70
+4,4,23
+5,5,80
