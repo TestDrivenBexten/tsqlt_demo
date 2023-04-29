@@ -57,7 +57,7 @@ GO
 /*
     Views
 */
-CREATE VIEW vwItemItemTypeNameQuality AS (
+CREATE VIEW vwItemNameQuality AS (
     SELECT
         ItemType.ItemType_Name,
         Item.Item_Quality
