@@ -1,4 +1,4 @@
-CREATE FUNCTION fnCanCraftRecipe(
+CREATE OR ALTER FUNCTION fnCanCraftRecipe(
     @recipeId INT,
     @itemId1 INT,
     @itemId2 INT,
@@ -7,4 +7,5 @@ CREATE FUNCTION fnCanCraftRecipe(
 RETURNS INT AS
 BEGIN
     RETURN 0;
-END
+END;
+GO

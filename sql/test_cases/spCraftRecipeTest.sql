@@ -15,7 +15,7 @@ GO
 CREATE PROCEDURE spCraftRecipeTest.[test should expect exception if recipe can not be crafted]
 AS BEGIN
     -- Arrange
-    EXEC tSQLt.ExpectException @ExpectedMessage = 'Recipe 1 cannot be crafted';
+    EXEC tSQLt.ExpectException @ExpectedMessage = 'Recipe 1 can not be crafted';
     EXEC tSQLt.FakeFunction 'fnCanCraftRecipe', 'spCraftRecipeTest.Fake_CanCraftRecipe_False';
 
     -- Act & Assert

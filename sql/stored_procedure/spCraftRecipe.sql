@@ -4,9 +4,9 @@ CREATE PROCEDURE spCraftRecipe
     @itemId2 INT,
     @itemId3 INT
 AS BEGIN
+    IF dbo.fnCanCraftRecipe(@recipeId, @itemId1, @itemId2, @itemId3) = 0
+        THROW 123456, 'Recipe 1 can not be crafted', 1;
     /*
-        Check if recipe can be crafted
-
         Remove items
 
         Insert new item to database
