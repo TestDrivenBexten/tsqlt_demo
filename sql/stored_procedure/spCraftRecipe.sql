@@ -11,8 +11,6 @@ AS BEGIN
     EXEC spDeleteItemById @itemId2;
     EXEC spDeleteItemById @itemId3;
     /*
-        Remove items
-
         Insert new item to database
     */
 END;
