@@ -2,7 +2,10 @@ CREATE PROCEDURE spDeleteLowQualityItem
     @qualityThreshold INT,
     @materialId INT
 AS BEGIN
-    SELECT 1;
-    -- TODO Delete Low quality items
+    DELETE FROM
+        Item
+    WHERE
+        Item_Quality < @qualityThreshold
+        AND Material_ID = @materialId;
 END;
 GO
