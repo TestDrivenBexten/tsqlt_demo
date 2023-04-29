@@ -1,11 +1,10 @@
-FROM mcr.microsoft.com/mssql/server:2022-latest
+FROM mcr.microsoft.com/mssql/server:2017-latest
 
-USER root
-WORKDIR /app
-COPY PrepareServer.sql PrepareServer.sql
-COPY SetupDatabase.sql SetupDatabase.sql
-COPY tSQLt.class.sql tSQLt.class.sql
-COPY entrypoint.sh entrypoint.sh
+# Create a config directory
+RUN mkdir -p /usr/config
+WORKDIR /usr/config
 
-EXPOSE 1433
+# Bundle config source
+COPY . /usr/config
+
 ENTRYPOINT ["./entrypoint.sh"]
