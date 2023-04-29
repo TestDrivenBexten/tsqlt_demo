@@ -81,3 +81,22 @@ CREATE VIEW vwRecipeRequirementName AS (
         LEFT JOIN Category ON Category.Category_ID = RecipeRequirement.Category_ID
 );
 GO
+
+CREATE VIEW vwRecipeInfo AS (
+    SELECT
+        Recipe.Recipe_ID,
+        ItemType.ItemType_Name,
+        Require1.RequirementName AS Requirement1,
+        Require2.RequirementName AS Requirement2,
+        Require3.RequirementName AS Requirement3
+    FROM
+        Recipe
+        JOIN ItemType ON ItemType.ItemType_ID = Recipe.ItemType_ID
+        JOIN vwRecipeRequirementName Require1 ON
+            Require1.RecipeRequirement_ID = Recipe.RecipeRequirement_ID_1
+        JOIN vwRecipeRequirementName Require2 ON
+            Require2.RecipeRequirement_ID = Recipe.RecipeRequirement_ID_2
+        LEFT JOIN vwRecipeRequirementName Require3 ON
+            Require3.RecipeRequirement_ID = Recipe.RecipeRequirement_ID_3
+);
+GO
