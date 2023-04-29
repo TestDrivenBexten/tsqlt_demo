@@ -1,2 +1,15 @@
-Recipe_ID,Recipe_Name,RecipeRequirement_ID_1,RecipeRequirement_ID_2,RecipeRequirement_ID_3
-1,Steel Ingot,1,2,
+CREATE PROCEDURE spCraftRecipe
+    @recipeId INT,
+    @itemId1 INT,
+    @itemId2 INT,
+    @itemId3 INT
+AS BEGIN
+    /*
+        Check if recipe can be crafted
+
+        Remove items
+
+        Insert new item to database
+    */
+END;
+GO
