@@ -16,6 +16,14 @@ CREATE TABLE [Category](
 );
 GO
 
+CREATE TABLE [Item](
+	[Item_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Material_ID] INT NOT NULL,
+    [Item_Quality] INT NOT NULL,
+    CONSTRAINT FK_Material FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
+);
+GO
+
 CREATE TABLE [MaterialCategory](
 	[Category_ID] INT NOT NULL,
 	[Material_ID] INT NOT NULL,
@@ -23,3 +31,15 @@ CREATE TABLE [MaterialCategory](
     CONSTRAINT FK_Material FOREIGN KEY (Material_ID) REFERENCES Material (Material_ID)
 );
 GO
+
+/*
+    Views
+*/
+CREATE VIEW vwItemMaterialNameQuality AS (
+    SELECT
+        Material.Material_Name,
+        Item.Item_Quality
+    FROM
+        Item
+        JOIN Material ON Item.Material_ID = Material.Material_ID
+)
