@@ -5,19 +5,17 @@ Param(
 Install-Module -Force -Name SqlServer
 
 $DBSTATUS=1
-$ERRCODE=$true
+# $ERRCODE=$true
+# TODO Better error handling
 $i=0
 
 while ($DBSTATUS -ne 0) {
 	$Row = Invoke-Sqlcmd -QueryTimeout 1 -TrustServerCertificate -Username sa -Password  $SA_PASSWORD -Query "SET NOCOUNT ON; Select SUM(state) AS Count from sys.databases"
 	$DBSTATUS = $Row.Item("Count")
-	Write-Output "Hey: ${DBSTATUS}: You"
-	$ERRCODE=$?
-	Write-Output $ERRCODE
 	Start-Sleep -Seconds 10
 }
 
-if ( $DBSTATUS -ne 0 || !$ERRCODE ) {
+if ( $DBSTATUS -ne 0) {
 	Write-Output "SQL Server took more than 60 seconds to start up or one or more databases are not in an ONLINE state"
 	exit 1
 }
