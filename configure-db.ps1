@@ -77,12 +77,12 @@ ExecuteSqlFile $inventorySqlParameters "sql/stored_procedure/spCraftRecipe.sql"
 ExecuteSqlFile $inventorySqlParameters "sql/stored_procedure/spDeleteLowQualityItem.sql"
 
 # Prepare tSQLt on Server
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/tsqlt/PrepareServer.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/tsqlt/tSQLt.class.sql
+ExecuteSqlFile $inventorySqlParameters "sql/tsqlt/PrepareServer.sql"
+ExecuteSqlFile $inventorySqlParameters "sql/tsqlt/tSQLt.class.sql"
 
 # Create test cases
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/test_cases/spCraftRecipeTest.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/test_cases/spDeleteLowQualityItemTest.sql
+ExecuteSqlFile $inventorySqlParameters "sql/test_cases/spCraftRecipeTest.sql"
+ExecuteSqlFile $inventorySqlParameters "sql/test_cases/spDeleteLowQualityItemTest.sql"
 
 # Run test cases
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -Q "EXEC tSQLt.RunAll;"
