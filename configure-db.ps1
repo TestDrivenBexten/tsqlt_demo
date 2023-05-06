@@ -85,4 +85,4 @@ ExecuteSqlFile $inventorySqlParameters "sql/test_cases/spCraftRecipeTest.sql"
 ExecuteSqlFile $inventorySqlParameters "sql/test_cases/spDeleteLowQualityItemTest.sql"
 
 # Run test cases
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -Q "EXEC tSQLt.RunAll;"
+ExecuteSqlQuery $inventorySqlParameters "EXEC tSQLt.RunAll"
