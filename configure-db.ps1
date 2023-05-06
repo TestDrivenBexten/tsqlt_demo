@@ -17,9 +17,29 @@ function ExecuteSqlQuery {
 	Invoke-Sqlcmd @sqlParameters -Query $query -TrustServerCertificate
 }
 
+function ExecuteSqlFile {
+	param (
+		[Parameter(Position=0)][hashtable] $sqlParameters,
+		[Parameter(Position=1)][string] $inputFile
+	)
+	Invoke-Sqlcmd @sqlParameters -InputFile $inputFile -TrustServerCertificate
+}
+
+function Copy-HashTable-WithKey {
+	param (
+		[Parameter(Position=0,Mandatory=$true)][hashtable] $hashTable,
+		[Parameter(Position=1,Mandatory=$true)][string] $hashKey,
+		[Parameter(Position=2,Mandatory=$true)][string] $hashValue
+	)
+	$newHashTable = $hashTable.Clone()
+	$newHashTable[$hashKey] = $hashValue
+	$newHashTable
+}
+
 $sqlParameters = @{
 	Username = "sa"
 	Password = $SA_PASSWORD
+	Server = "localhost"
 	QueryTimeout = 1
 }
 
@@ -45,8 +65,10 @@ if ( $DBSTATUS -ne 0) {
 /opt/mssql-tools/bin/bcp RecipeRequirement in sample_data/recipe-requirement.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
 /opt/mssql-tools/bin/bcp Recipe in sample_data/recipe.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
 
+$inventorySqlParameters = Copy-HashTable-WithKey $sqlParameters "Database" "Inventory"
+
 # Create Functions
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/function/fnCanCraftRecipe.sql
+ExecuteSqlFile $inventorySqlParameters "sql/function/fnCanCraftRecipe.sql"
 
 # Create Stored Procedures
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteItemById.sql
