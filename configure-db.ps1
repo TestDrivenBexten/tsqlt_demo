@@ -1,20 +1,26 @@
-#!/bin/bash
-# Example taken from https://github.com/microsoft/mssql-docker/blob/master/linux/preview/examples/mssql-customize/configure-db.sh
-DBSTATUS=1
-ERRCODE=1
-i=0
+Param(
+	[Parameter(mandatory=$true)][string]$SA_PASSWORD
+)
 
-while [[ $DBSTATUS -ne 0 ]] && [[ $i -lt 60 ]] && [[ $ERRCODE -ne 0 ]]; do
-	i=$i+1
-	DBSTATUS=$(/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P $SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
-	ERRCODE=$?
-	sleep 1
-done
+Install-Module -Force -Name SqlServer
 
-if [ $DBSTATUS -ne 0 ] OR [ $ERRCODE -ne 0 ]; then 
-	echo "SQL Server took more than 60 seconds to start up or one or more databases are not in an ONLINE state"
+$DBSTATUS=1
+$ERRCODE=$true
+$i=0
+
+while ($DBSTATUS -ne 0) {
+	$Row = Invoke-Sqlcmd -QueryTimeout 1 -TrustServerCertificate -Username sa -Password  $SA_PASSWORD -Query "SET NOCOUNT ON; Select SUM(state) AS Count from sys.databases"
+	$DBSTATUS = $Row.Item("Count")
+	Write-Output "Hey: ${DBSTATUS}: You"
+	$ERRCODE=$?
+	Write-Output $ERRCODE
+	Start-Sleep -Seconds 10
+}
+
+if ( $DBSTATUS -ne 0 || !$ERRCODE ) {
+	Write-Output "SQL Server took more than 60 seconds to start up or one or more databases are not in an ONLINE state"
 	exit 1
-fi
+}
 
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i SetupDatabase.sql
 
