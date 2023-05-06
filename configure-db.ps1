@@ -40,7 +40,7 @@ $sqlParameters = @{
 	Username = "sa"
 	Password = $SA_PASSWORD
 	Server = "localhost"
-	QueryTimeout = 1
+	# QueryTimeout = 1
 }
 
 while ($DBSTATUS -ne 0) {
@@ -54,7 +54,8 @@ if ( $DBSTATUS -ne 0) {
 	exit 1
 }
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i SetupDatabase.sql
+$masterSqlParameters = Copy-HashTable-WithKey $sqlParameters "Database" "master"
+ExecuteSqlFile $masterSqlParameters "SetupDatabase.sql"
 
 /opt/mssql-tools/bin/bcp Category in sample_data/category.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
 /opt/mssql-tools/bin/bcp ItemType in sample_data/item-type.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2
