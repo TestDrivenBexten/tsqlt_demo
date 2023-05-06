@@ -9,8 +9,22 @@ $DBSTATUS=1
 # TODO Better error handling
 $i=0
 
+function ExecuteSqlQuery {
+	param (
+		[Parameter(Position=0)][hashtable] $sqlParameters,
+		[Parameter(Position=1)][string] $query
+	)
+	Invoke-Sqlcmd @sqlParameters -Query $query -TrustServerCertificate
+}
+
+$sqlParameters = @{
+	Username = "sa"
+	Password = $SA_PASSWORD
+	QueryTimeout = 1
+}
+
 while ($DBSTATUS -ne 0) {
-	$Row = Invoke-Sqlcmd -QueryTimeout 1 -TrustServerCertificate -Username sa -Password  $SA_PASSWORD -Query "SET NOCOUNT ON; Select SUM(state) AS Count from sys.databases"
+	$Row = ExecuteSqlQuery $sqlParameters "SET NOCOUNT ON; Select SUM(state) AS Count from sys.databases"
 	$DBSTATUS = $Row.Item("Count")
 	Start-Sleep -Seconds 10
 }
