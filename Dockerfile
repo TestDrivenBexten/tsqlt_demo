@@ -6,5 +6,7 @@ WORKDIR /usr/config
 
 # Bundle config source
 COPY . /usr/config
+RUN chmod +x /usr/config/entrypoint.sh
+RUN chmod +x /usr/config/configure-db.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["bash", "./entrypoint.sh"]
