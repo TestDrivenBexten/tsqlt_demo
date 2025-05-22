@@ -6,13 +6,13 @@ GO
 
 CREATE TABLE [ItemType](
 	[ItemType_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[ItemType_Name] [nchar](25) NOT NULL
+	[ItemType_Name] [varchar](25) NOT NULL
 );
 GO
 
 CREATE TABLE [Category](
 	[Category_ID] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Category_Name] [nchar](25) NOT NULL
+	[Category_Name] [varchar](25) NOT NULL
 );
 GO
 
