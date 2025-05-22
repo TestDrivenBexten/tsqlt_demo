@@ -67,6 +67,18 @@ CREATE VIEW vwItemNameQuality AS (
 );
 GO
 
+CREATE VIEW vwAverageQuality_HardCodedPivot AS (
+    SELECT
+        'AverageQuality' AS 'ItemName',
+        [Iron], [Coal], [Paper]
+    FROM [Inventory].[dbo].[vwItemNameQuality]
+    PIVOT (
+        MAX(Item_Quality)
+        FOR ItemType_Name IN ([Iron], [Coal], [Paper])
+    ) AS PivotTable
+);
+GO
+
 CREATE VIEW vwRecipeRequirementName AS (
     SELECT
         RecipeRequirement.RecipeRequirement_ID,
