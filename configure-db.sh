@@ -4,6 +4,10 @@ DBSTATUS=1
 ERRCODE=1
 i=0
 
+runSqlFile() {
+	/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i $1
+}
+
 while [[ $DBSTATUS -ne 0 ]] && [[ $i -lt 60 ]] && [[ $ERRCODE -ne 0 ]]; do
 	i=$i+1
 	DBSTATUS=$(/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P $SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
@@ -28,22 +32,23 @@ fi
 /opt/mssql-tools/bin/bcp Recipe in sample_data/recipe.csv -S localhost -U sa -P $SA_PASSWORD -d Inventory -q -c -t "," -F 2 -r "\r\n"
 
 # Create Functions
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/function/fnCanCraftRecipe.sql
+runSqlFile sql/function/fnCanCraftRecipe.sql
 
 # Create Stored Procedures
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spCalculateRequirementCounts.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spCalculateRequirementCounts_Procedural.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteItemById.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spCraftRecipe.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/stored_procedure/spDeleteLowQualityItem.sql
+runSqlFile sql/stored_procedure/spCalculateRequirementCounts.sql
+runSqlFile sql/stored_procedure/spCalculateRequirementCounts.sql
+runSqlFile sql/stored_procedure/spCalculateRequirementCounts_Procedural.sql
+runSqlFile sql/stored_procedure/spDeleteItemById.sql
+runSqlFile sql/stored_procedure/spCraftRecipe.sql
+runSqlFile sql/stored_procedure/spDeleteLowQualityItem.sql
 
 # Prepare tSQLt on Server
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/tsqlt/PrepareServer.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/tsqlt/tSQLt.class.sql
+runSqlFile sql/tsqlt/PrepareServer.sql
+runSqlFile sql/tsqlt/tSQLt.class.sql
 
 # Create test cases
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/test_cases/spCraftRecipeTest.sql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -i sql/test_cases/spDeleteLowQualityItemTest.sql
+runSqlFile sql/test_cases/spCraftRecipeTest.sql
+runSqlFile sql/test_cases/spDeleteLowQualityItemTest.sql
 
 # Run test cases
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d Inventory -Q "EXEC tSQLt.RunAll;"
